@@ -20,6 +20,7 @@ use crate::EndianScalar;
 use core::fmt::{Debug, Formatter, Result};
 use core::marker::PhantomData;
 use core::mem::size_of;
+use core::cmp::Ordering;
 
 #[derive(Copy, Clone)]
 pub struct Array<'a, T: 'a, const N: usize>(&'a [u8], PhantomData<T>);
@@ -31,6 +32,42 @@ where
 {
     fn fmt(&self, f: &mut Formatter) -> Result {
         f.debug_list().entries(self.iter()).finish()
+    }
+}
+
+impl<'a, T: 'a, const N: usize> PartialEq for Array<'a, T, N>
+where
+    T: 'a + Follow<'a>,
+    <T as Follow<'a>>::Inner: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.iter().eq(other.iter())
+    }
+}
+
+impl<'a, T: 'a, const N: usize> Eq for Array<'a, T, N>
+where
+    T: 'a + Follow<'a>,
+    <T as Follow<'a>>::Inner: Eq,
+{}
+
+impl<'a, T: 'a, const N: usize> PartialOrd for Array<'a, T, N>
+where
+    T: 'a + Follow<'a>,
+    <T as Follow<'a>>::Inner: PartialOrd,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.iter().partial_cmp(other.iter())
+    }
+}
+
+impl<'a, T: 'a, const N: usize> Ord for Array<'a, T, N>
+where
+    T: 'a + Follow<'a>,
+    <T as Follow<'a>>::Inner: Ord,
+{
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.iter().cmp(other.iter())
     }
 }
 

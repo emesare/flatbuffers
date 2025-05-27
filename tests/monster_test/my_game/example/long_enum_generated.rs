@@ -12,7 +12,7 @@ use super::*;
 #[allow(non_upper_case_globals)]
 mod bitflags_long_enum {
   flatbuffers::bitflags::bitflags! {
-    #[derive(Default, Debug, Clone, Copy, PartialEq)]
+    #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
     pub struct LongEnum: u64 {
       const LongOne = 2;
       const LongTwo = 4;

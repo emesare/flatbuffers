@@ -13,7 +13,7 @@ use super::*;
 mod bitflags_color {
   flatbuffers::bitflags::bitflags! {
     /// Composite components of Monster color.
-    #[derive(Default, Debug, Clone, Copy, PartialEq)]
+    #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
     pub struct Color: u8 {
       const Red = 1;
       /// \brief color Green
